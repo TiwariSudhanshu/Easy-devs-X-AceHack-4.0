@@ -44,7 +44,7 @@ const Additem = () => {
         e.preventDefault();
         console.log(data);
         try {
-            const response = await axios.post("http://localhost:5000/add-product",data)
+            const response = await axios.post("http://localhost:3000/add-product",data)
             console.log(response);
             if(response.status === 200) {
                 alert("Product added successfully");

@@ -75,7 +75,7 @@
 
 
 import express from "express";
-// import cors from "cors";
+import cors from "cors";
 import { ethers } from "ethers";
 import dotenv from "dotenv";
 import fs from "fs";
@@ -88,7 +88,11 @@ const contractData = JSON.parse(fs.readFileSync(contractPath, "utf8"));
 const CONTRACT_ABI = contractData.abi;
 
 const app = express();
-// app.use(cors());
+app.use(cors({
+    origin:"*",
+    methods:["GET", "POST"],
+    credentials:true,
+}));
 app.use(express.json());
 
 const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS || CONTRACT_ADDRESS;
@@ -98,14 +102,17 @@ const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, wallet);
 
 app.post("/add-product", async (req, res) => {
     try {
-        const { recipient, name, price, category } = req.body;
+        const { recipient, name, price, description } = req.body;
 
-        if (!recipient || !name || !price || !category) {
+        console.log(`📦 Minting NFT for: Name=${name}, Price=${price}, Category=${description}`);
+
+
+        if (!recipient || !name || !price || !description) {
             return res.status(400).json({ error: "Missing required fields: recipient, name, price, category" });
         }
 
-        console.log(`📦 Minting NFT for: Name=${name}, Price=${price}, Category=${category}`);
-        const productInfo = `${name},${price},${category}`;
+        console.log(`📦 Minting NFT for: Name=${name}, Price=${price}, Category=${description}`);
+        const productInfo = `${name},${price},${description}`;
 
         const tx = await contract.mintProductNFT(recipient, productInfo);
         console.log(`⏳ Transaction sent: ${tx.hash}`);
