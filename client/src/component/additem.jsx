@@ -6,8 +6,7 @@ import TextAreaField from './parts/textareafield';
 import FileUpload from './parts/fileupload';
 import Button from './parts/button';
 
-
-const AddProduct = () => {
+const Additem = () => {
     const [specifications, setSpecifications] = useState([
         { key: '', value: '' }
     ]);
@@ -34,115 +33,151 @@ const AddProduct = () => {
     };
 
     return (
-        <div className="p-4">
-            <header className='flex justify-center py-10'>
-                <h1 className='font-bold text-2xl'>Add item</h1>
-            </header>
-            <form className="max-w-5xl mx-auto flex flex-col gap-6" onSubmit={handleSubmit}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <InputField
-                        label="Product Title"
-                        type="text"
-                        placeholder="Enter product title"
-                        required
-                    />
-                    <SelectField
-                        label="Product Category"
-                        options={[
-                            { value: 'electronics', label: 'Electronics' },
-                            { value: 'clothing', label: 'Clothing' },
-                            { value: 'furniture', label: 'Furniture' },
-                            { value: 'other', label: 'Other' }
-                        ]}
-                    />
-                </div>
-
-                <TextAreaField
-                    label="Product Description"
-                    placeholder="Enter detailed product description"
-                    required
-                    rows={4}
-                />
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <Input
-                        label="Price"
-                        type="number"
-                        placeholder="0.00"
-                        required
-                    />
-                    <Input
-                        label="Discount (%)"
-                        type="number"
-                        placeholder="0"
-                    />
-                    <Input
-                        label="Stock Quantity"
-                        type="number"
-                        placeholder="0"
-                        required
-                    />
-                </div>
-
-                <div>
-                    <h3 className="text-lg font-medium mb-2">Product Images</h3>
-                    <FileUpload
-                        label="Upload Product Images"
-                        multiple
-                        accept="image/*"
-                        maxFiles={5}
-                    />
-                </div>
-                <div>
-                    <div className="flex justify-between items-center mb-2">
-                        <h3 className="text-lg font-medium">Product Specifications</h3>
-                        <Button
-                            type="button"
-                            onClick={addSpecification}
-                            variant="secondary"
-                            size="sm"
-                            label={"Add Specification"}
-                        />
-                    </div>
-
-                    {specifications.map((spec, index) => (
-                        <div key={index} className="flex gap-4 items-end mb-2">
-                            <Input
-                                label={index === 0 ? "Specification Name" : ""}
+        <div className="bg-gray-50 min-h-screen py-8 px-4">
+            <div className="w-full bg-white rounded-lg shadow-md p-8">
+                <header className="mb-8 text-center">
+                    <h1 className="font-bold text-3xl text-gray-800">Add New Product</h1>
+                    <p className="text-gray-500 mt-2">Complete the form below to add a new product to your inventory</p>
+                </header>
+                
+                <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
+                    {/* Basic Information Section */}
+                    <section className="border-b pb-6">
+                        <h2 className="text-xl font-semibold mb-4 text-gray-700">Basic Information</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <InputField
+                                label="Product Title"
                                 type="text"
-                                placeholder="e.g. Color, Size, Material"
-                                value={spec.key}
-                                onChange={(e) => updateSpecification(index, 'key', e.target.value)}
-                                className="flex-1"
+                                placeholder="Enter product title"
+                                required
                             />
-                            <Input
-                                label={index === 0 ? "Value" : ""}
-                                type="text"
-                                placeholder="e.g. Blue, Large, Cotton"
-                                value={spec.value}
-                                onChange={(e) => updateSpecification(index, 'value', e.target.value)}
-                                className="flex-1"
+                            <SelectField
+                                label="Product Category"
+                                options={[
+                                    { value: 'electronics', label: 'Electronics' },
+                                    { value: 'clothing', label: 'Clothing' },
+                                    { value: 'furniture', label: 'Furniture' },
+                                    { value: 'other', label: 'Other' }
+                                ]}
                             />
-                            {index > 0 && (
-                                <Button
-                                    type="button"
-                                    onClick={() => removeSpecification(index)}
-                                    variant="danger"
-                                    size="sm"
-                                    label={"Remove"}
-                                />
-                            )}
                         </div>
-                    ))}
-                </div>
+                    </section>
 
-                {/* Submit Button */}
-                <div className="flex justify-end mt-4">
-                    <Button label={"Add now"} type="submit" />
-                </div>
-            </form>
+                    {/* Description Section */}
+                    <section className="border-b pb-6">
+                        <h2 className="text-xl font-semibold mb-4 text-gray-700">Product Details</h2>
+                        <TextAreaField
+                            label="Product Description"
+                            placeholder="Enter detailed product description"
+                            required
+                            rows={4}
+                        />
+                    </section>
+
+                    {/* Pricing & Inventory */}
+                    <section className="border-b pb-6">
+                        <h2 className="text-xl font-semibold mb-4 text-gray-700">Pricing & Inventory</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <Input
+                                label="Price ($)"
+                                type="number"
+                                placeholder="0.00"
+                                required
+                            />
+                            <Input
+                                label="Discount (%)"
+                                type="number"
+                                placeholder="0"
+                            />
+                            <Input
+                                label="Stock Quantity"
+                                type="number"
+                                placeholder="0"
+                                required
+                            />
+                        </div>
+                    </section>
+
+                    {/* Images Section */}
+                    <section className="border-b pb-6">
+                        <h2 className="text-xl font-semibold mb-4 text-gray-700">Product Images</h2>
+                        <FileUpload
+                            label="Upload Product Images (Max 5)"
+                            multiple
+                            accept="image/*"
+                            maxFiles={5}
+                        />
+                        <p className="text-sm text-gray-500 mt-2">Supported formats: JPG, PNG. Max file size: 5MB</p>
+                    </section>
+
+                    {/* Specifications Section */}
+                    <section>
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-xl font-semibold text-gray-700">Product Specifications</h2>
+                            <Button
+                                type="button"
+                                onClick={addSpecification}
+                                variant="secondary"
+                                size="sm"
+                                label="Add Specification"
+                            />
+                        </div>
+
+                        <div className="space-y-4">
+                            {specifications.map((spec, index) => (
+                                <div key={index} className="flex gap-4 items-center">
+                                    <div className="flex-1">
+                                        <Input
+                                            label={index === 0 ? "Specification Name" : ""}
+                                            type="text"
+                                            placeholder="e.g. Color, Size, Material"
+                                            value={spec.key}
+                                            onChange={(e) => updateSpecification(index, 'key', e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="flex-1">
+                                        <Input
+                                            label={index === 0 ? "Value" : ""}
+                                            type="text"
+                                            placeholder="e.g. Blue, Large, Cotton"
+                                            value={spec.value}
+                                            onChange={(e) => updateSpecification(index, 'value', e.target.value)}
+                                        />
+                                    </div>
+                                    {index > 0 && (
+                                        <div className="pt-4">
+                                            <Button
+                                                type="button"
+                                                onClick={() => removeSpecification(index)}
+                                                variant="danger"
+                                                size="sm"
+                                                label="Remove"
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+
+                    {/* Submit Button */}
+                    <div className="flex justify-end mt-4">
+                        <div className="flex gap-4">
+                            <Button 
+                                label="Cancel" 
+                                type="button" 
+                                variant="secondary" 
+                            />
+                            <Button 
+                                label="Add Product" 
+                                type="submit" 
+                            />
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };
 
-export default AddProduct;
+export default Additem;

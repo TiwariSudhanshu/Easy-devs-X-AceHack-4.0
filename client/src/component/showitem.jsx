@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Input from './parts/inputfield';
 import SelectField from './parts/selectfiled';
 import Button from './parts/button';
+import { Link } from 'react-router-dom';
 
 const ShowItem = () => {
     const [products, setProducts] = useState([
@@ -95,7 +96,7 @@ const ShowItem = () => {
                         />
                     </div>
                     <div className="flex items-end mt-4 md:mt-0">
-                        <Button variant="primary">Add New Product</Button>
+                       <Link to={'/additem'}> <Button className='cursor-pointer' label={"Add New Product"} /></Link>
                     </div>
                 </div>
 
@@ -151,7 +152,7 @@ const ShowItem = () => {
                                         <td className="px-4 py-4 whitespace-nowrap">
                                             <div className="flex flex-col">
                                                 <span className="text-sm font-medium text-gray-900">
-                                                    ${product.price.toFixed(2)}
+                                                    Rs {product.price.toFixed(2)}
                                                 </span>
                                                 {product.discount > 0 && (
                                                     <span className="text-xs text-green-600">
