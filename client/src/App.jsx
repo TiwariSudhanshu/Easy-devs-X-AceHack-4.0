@@ -1,9 +1,17 @@
+import Additem from "./component/additem"
+import ShowItem from "./component/showitem"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 
 function App() {
 
   return (
     <>
-    <h1 className="text-3xl underline">Hey</h1>
+      <Router>
+        <Routes>
+          <Route path="/" element={<ShowItem />} />
+          <Route path="/additem" element={<Additem />} />
+        </Routes>
+      </Router>
     </>
   )
 }
