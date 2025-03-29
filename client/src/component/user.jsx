@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import InputField from './parts/inputfield'
 import Button from './parts/button'
+import axios from 'axios'
 
 const Verify = () => {
     const [inputKey, setInputKey] = useState('')
@@ -27,23 +28,51 @@ const Verify = () => {
         setInputKey(e.target.value)
     }
 
-    const handleVerify = () => {
+    // const handleVerify = () => {
+    //     if (!inputKey.trim()) {
+    //         alert("Please enter an item key")
+    //         return
+    //     }
+
+    //     setIsVerifying(true)
+        
+    //     setTimeout(() => {
+    //         if (inputKey === sampleData.itemKey) {
+    //             setVerifiedData(sampleData)
+    //         } else {
+    //             setVerifiedData(null)
+    //             alert("No item found with that key")
+    //         }
+    //         setIsVerifying(false)
+    //     }, 1000)
+    // }
+    const handleVerify = async () => {
         if (!inputKey.trim()) {
             alert("Please enter an item key")
             return
         }
 
         setIsVerifying(true)
-        
-        setTimeout(() => {
-            if (inputKey === sampleData.itemKey) {
-                setVerifiedData(sampleData)
+
+        try {
+            const response = await axios.get(`http://localhost:3000/get-product/${inputKey}`, {
+                params: { id: inputKey }
+            })
+
+            if (response.data) {
+                console.log("data",response.data);
+                setVerifiedData(response.data)
+                alert("Data found")
             } else {
                 setVerifiedData(null)
                 alert("No item found with that key")
             }
+        } catch (error) {
+            console.error("Error verifying item:", error)
+            alert("An error occurred while verifying the item")
+        } finally {
             setIsVerifying(false)
-        }, 1000)
+        }
     }
 
     return (
@@ -71,9 +100,14 @@ const Verify = () => {
                         <h2 className='text-xl font-semibold'>Item Key: {verifiedData.itemKey}</h2>
                         <h3 className='mt-4 font-medium'>Ownership History:</h3>
                         <ul className='list-disc ml-5 mt-2'>
-                            {verifiedData.ownerHistory.map((owner, index) => (
+                            {/* {verifiedData.ownerHistory.map((owner, index) => (
                                 <li key={index} className='mt-1'>
                                     {owner.owner} - {new Date(owner.date).toLocaleString()}
+                                </li>
+                            ))} */}
+                            {Object.entries(verifiedData).map(([key, value], index) => (
+                                <li key={index} className='mt-1'>
+                                    <strong>{key}:</strong> {typeof value === 'object' ? JSON.stringify(value, null, 2) : value.toString()}
                                 </li>
                             ))}
                         </ul>

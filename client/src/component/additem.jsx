@@ -6,8 +6,10 @@ import TextAreaField from './parts/textareafield';
 import FileUpload from './parts/fileupload';
 import Button from './parts/button';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const Additem = () => {
+    const walletAddress = useSelector((state) => state.wallet.walletAddress);
     const [specifications, setSpecifications] = useState([
         { key: '', value: '' }
     ]);
@@ -43,6 +45,7 @@ const Additem = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(data);
+        data.recipient = walletAddress;
         try {
             const response = await axios.post("http://localhost:3000/add-product",data)
             console.log(response);

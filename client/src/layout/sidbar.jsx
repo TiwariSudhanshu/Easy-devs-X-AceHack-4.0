@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-
+import { ethers } from 'ethers';
+import { useDispatch } from 'react-redux';
+import { setWalletAddress } from '../store/walletSlice';
+import { useSelector } from 'react-redux';
 const ProductsIcon = () => <span>📦</span>;
 const AddIcon = () => <span>➕</span>;
 
 const Sidebar = () => {
+    const dispatch = useDispatch();
+    const walletAddress = useSelector((state) => state.wallet.walletAddress);
     const [isOpen, setIsOpen] = useState(false);
+    // const [walletAddress, setWalletAddress] = useState(null);
     const location = useLocation();
 
     const toggleSidebar = () => setIsOpen(!isOpen);
@@ -18,7 +24,23 @@ const Sidebar = () => {
     const navItems = [
         { name: 'All Products', path: '/', icon: <ProductsIcon /> },
         { name: 'Add Product', path: '/additem', icon: <AddIcon /> },
+        { name: 'Verify Product', path: '/verify', icon: <AddIcon /> },
     ];
+
+    // Function to connect wallet
+    const connectWallet = async () => {
+        if (window.ethereum) {
+            try {
+                const provider = new ethers.BrowserProvider(window.ethereum);
+                const accounts = await provider.send("eth_requestAccounts", []);
+                dispatch(setWalletAddress(accounts[0]))  // Store the first connected account
+            } catch (error) {
+                console.error("Wallet connection failed:", error);
+            }
+        } else {
+            alert("MetaMask not detected! Please install MetaMask.");
+        }
+    };
 
     return (
         <>
@@ -77,9 +99,18 @@ const Sidebar = () => {
 
                 {/* Connect Wallet Button */}
                 <div className="absolute bottom-4 w-full px-4">
-                    <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">
-                        Connect Wallet
-                    </button>
+                    {walletAddress ? (
+                        <button className="w-full bg-green-600 text-white py-2 px-4 rounded cursor-default">
+                            {walletAddress.slice(0, 6) + '...' + walletAddress.slice(-4)}
+                        </button>
+                    ) : (
+                        <button 
+                            onClick={connectWallet} 
+                            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
+                        >
+                            Connect Wallet
+                        </button>
+                    )}
                 </div>
             </div>
         </>
