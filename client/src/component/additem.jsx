@@ -5,6 +5,7 @@ import InputField from './parts/inputfield';
 import TextAreaField from './parts/textareafield';
 import FileUpload from './parts/fileupload';
 import Button from './parts/button';
+import axios from 'axios';
 
 const Additem = () => {
     const [specifications, setSpecifications] = useState([
@@ -14,6 +15,18 @@ const Additem = () => {
     const addSpecification = () => {
         setSpecifications([...specifications, { key: '', value: '' }]);
     };
+
+    const [data,setData] = useState({
+        name:"",
+        description:"",
+        price:0
+    })
+
+    const handleDataOnChange = function(event){
+        const name = event.target.name
+        const value = event.target.value
+        setData((prevData)=>({...prevData , [name]:value}))        
+    }
 
     const updateSpecification = (index, field, value) => {
         const updatedSpecs = [...specifications];
@@ -27,8 +40,18 @@ const Additem = () => {
         setSpecifications(updatedSpecs);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log(data);
+        try {
+            const response = await axios.post("http://localhost:5000/add-product",data)
+            console.log(response);
+            if(response.status === 200) {
+                alert("Product added successfully");
+            }
+        } catch (error) {
+            console.log(error);
+        }
         console.log('Form submitted');
     };
 
@@ -46,10 +69,12 @@ const Additem = () => {
                         <h2 className="text-xl font-semibold mb-4 text-gray-700">Basic Information</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <InputField
+                                name={"name"}
                                 label="Product Title"
                                 type="text"
                                 placeholder="Enter product title"
                                 required
+                                onChange={handleDataOnChange}
                             />
                             <SelectField
                                 label="Product Category"
@@ -67,10 +92,12 @@ const Additem = () => {
                     <section className="border-b pb-6">
                         <h2 className="text-xl font-semibold mb-4 text-gray-700">Product Details</h2>
                         <TextAreaField
+                            name={"description"}
                             label="Product Description"
                             placeholder="Enter detailed product description"
                             required
                             rows={4}
+                            onChange={handleDataOnChange}
                         />
                     </section>
 
@@ -79,10 +106,12 @@ const Additem = () => {
                         <h2 className="text-xl font-semibold mb-4 text-gray-700">Pricing & Inventory</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <Input
+                                name={"price"}
                                 label="Price ($)"
                                 type="number"
                                 placeholder="0.00"
                                 required
+                                onChange={handleDataOnChange}
                             />
                             <Input
                                 label="Discount (%)"

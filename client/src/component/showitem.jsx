@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Input from './parts/inputfield';
 import SelectField from './parts/selectfiled';
 import Button from './parts/button';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const ShowItem = () => {
     const [products, setProducts] = useState([
@@ -67,6 +68,32 @@ const ShowItem = () => {
 
         return matchesSearch && matchesCategory;
     });
+
+    // useEffect(()=>{
+    //     const fetchProducts = async () => {
+    //         try {
+
+    //             const response = await axios.get(`/get-product/:${id}`)
+
+
+    //         } catch (error) {
+                
+    //         }
+    //     }
+    // },[])
+
+    async function fetchProductsBySearch() {
+        try {
+            const response = await axios.get(`/get-product/:${id}`,{},{})
+            console.log(response);
+
+            setProducts([response.data])
+
+            
+        } catch (error) {
+            
+        }
+    } 
 
     return (
         <div className="p-4">
