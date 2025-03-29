@@ -1,4 +1,5 @@
 import { ProductModel } from "../models/product.model.js";
+import uploadFileTo_IFPS_Database from "../utility/upload-file.js";
 
 const addProduct = async (req,res) => {
     try {
@@ -21,10 +22,8 @@ const addProduct = async (req,res) => {
 
         console.log(`NFT ID: ${productNFTId}`);
         // save to database
-        const newProduct = new ProductModel({
-            productName,
-            productNFTId: productNFTId
-        });
+
+        const newProduct = await uploadFileTo_IFPS_Database()
 
         console.log(`Product ${newProduct} added to the database`);
         
