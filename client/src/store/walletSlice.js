@@ -20,3 +20,4 @@ const walletSlice = createSlice({
 export const { setWalletAddress, clearWalletAddress } = walletSlice.actions;
 
 export default walletSlice.reducer;
+

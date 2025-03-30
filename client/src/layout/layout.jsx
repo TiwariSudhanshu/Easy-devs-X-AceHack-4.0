@@ -1,5 +1,4 @@
 import React, { Children } from 'react'
-import Sidebar from './sidbar'
 import { Outlet } from 'react-router-dom'
 
 const Layout = ({ Children }) => {

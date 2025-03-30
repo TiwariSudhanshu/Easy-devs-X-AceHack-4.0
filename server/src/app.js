@@ -102,17 +102,17 @@ const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, wallet);
 
 app.post("/add-product", async (req, res) => {
     try {
-        const { recipient, name, price, description } = req.body;
+        const { recipient, name, price } = req.body;
 
-        console.log(`📦 Minting NFT for: Name=${name}, Price=${price}, Category=${description}`);
+        console.log(`📦 Minting NFT for: Name=${name}, Price=${price}`);
 
 
-        if (!recipient || !name || !price || !description) {
+        if (!recipient || !name || !price ) {
             return res.status(400).json({ error: "Missing required fields: recipient, name, price, category" });
         }
 
-        console.log(`📦 Minting NFT for: Name=${name}, Price=${price}, Category=${description}`);
-        const productInfo = `${name},${price},${description}`;
+        console.log(`📦 Minting NFT for: Name=${name}, Price=${price}`);
+        const productInfo = `${name},${price},`;
 
         const tx = await contract.mintProductNFT(recipient, productInfo);
         console.log(`⏳ Transaction sent: ${tx.hash}`);

@@ -41,14 +41,14 @@ const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, wallet);
 // ✅ Function to mint NFT
 export const addProduct = async (req, res) => {
     try {
-        const { recipient, name, price, category } = req.body;
-
-        if (!recipient || !name || !price || !category) {
+        const { recipient, name, price} = req.body;
+        if (!recipient || !name || !price ) {
             return res.status(400).json({ error: "Missing required fields: recipient, name, price, category" });
         }
-
-        console.log(`📦 Minting NFT for: Name=${name}, Price=${price}, Category=${category}`);
-        const productInfo = `${name},${price},${category}`;
+        
+        // console.log("category:",category);
+        console.log(`📦 Minting NFT for: Name=${name}, Price=${price}`);
+        const productInfo = `${name},${price}`;
 
         const tx = await contract.mintProductNFT(recipient, productInfo);
         console.log(`⏳ Transaction sent: ${tx.hash}`);
