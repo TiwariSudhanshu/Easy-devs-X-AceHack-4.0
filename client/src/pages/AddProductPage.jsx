@@ -14,6 +14,8 @@ import Sidebar from '../layout/Sidebar';
 
 const AddProduct = () => {
     const navigate = useNavigate();
+    const walletAddress = useSelector((state) => state.wallet.walletAddress);
+
     const [specifications, setSpecifications] = useState([{ key: '', value: '' }]);
     const [formData, setFormData] = useState({
         name: '',
@@ -26,6 +28,7 @@ const AddProduct = () => {
         description: '',
         shortDescription: '',
         tags: '',
+        recipient: walletAddress,
         status: 'active'
     });
     const [isLoading, setIsLoading] = useState(false);
@@ -77,7 +80,7 @@ const AddProduct = () => {
                     draggable: true,
                     progress: undefined,
                 });
-                navigate('/products'); // Redirect to products page after success
+                navigate('/'); // Redirect to products page after success
             }
         } catch (error) {
             console.error('Error adding product:', error);

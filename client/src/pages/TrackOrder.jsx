@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import InputField from '../component/parts/inputfield'
 import { FiCheck, FiChevronLeft } from 'react-icons/fi'
 import Sidebar from '../layout/Sidebar'
+import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const Track = () => {
     const navigate = useNavigate()
@@ -31,23 +33,32 @@ const Track = () => {
         setInputKey(e.target.value)
     }
 
-    const handleVerify = () => {
+    const handleVerify = async () => {
         if (!inputKey.trim()) {
-            alert("Please enter an item key")
+            toast.error("Please enter an item key")
             return
         }
 
         setIsVerifying(true)
-        
-        setTimeout(() => {
-            if (inputKey === sampleData.itemKey) {
-                setVerifiedData(sampleData)
+        try {
+            const response = await axios.get(`http://localhost:3000/get-product/${inputKey}`, {
+                params: { id: inputKey }
+            })
+
+            if (response.data) {
+                console.log("data",response.data);
+                setVerifiedData(response.data)
+                toast.success("Data found")
             } else {
                 setVerifiedData(null)
-                alert("No item found with that key")
+                toast.error("No item found with that key")
             }
+        } catch (error) {
+            console.error("Error verifying item:", error)
+            toast.error("An error occurred while verifying the item")
+        } finally {
             setIsVerifying(false)
-        }, 1000)
+        }
     }
 
     return (
@@ -148,7 +159,7 @@ const Track = () => {
                                 
                                 <h3 className='mt-6 font-medium text-gray-300 border-b border-gray-700 pb-2'>Ownership History:</h3>
                                 <div className="mt-4 space-y-4">
-                                    {verifiedData.ownerHistory.map((owner, index) => (
+                                    {/* {verifiedData.ownerHistory.map((owner, index) => (
                                         <div key={index} className="flex items-start">
                                             <div className="w-2 h-2 bg-indigo-500 rounded-full mt-2 mr-3"></div>
                                             <div>
@@ -164,7 +175,7 @@ const Track = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                    ))}
+                                    ))} */}
                                 </div>
                             </div>
                         )}
