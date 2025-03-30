@@ -1,56 +1,34 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Additem from "./component/additem"
-import ShowItem from "./component/showitem"
-import Layout from "./layout/layout";
-import Verify from "./component/user";
+import { useSelector } from "react-redux";
+import ProtectedRoute from "./ProtectedRoute";
 import LoginPage from "./pages/LoginPage";
 import Dashboard from "./pages/Dashboard";
 import AddProduct from "./pages/AddProductPage";
 import Track from "./pages/TrackOrder";
 
 function App() {
-  // const router = createBrowserRouter([
-  //   {
-  //     path: "/",
-  //     element: <Layout />,
-  //     children: [
-  //       {
-  //         index: true,
-  //         element: <ShowItem />,
-  //       },
-  //       {
-  //         path: "additem",
-  //         element: <Additem />
-  //       },
-  //       {
-  //         path: "verify",
-  //         element: <Verify />
-  //       }
-  //     ],
-  //   },
-  // ]);
+  const walletAddress = useSelector((state) => state.wallet.walletAddress); 
 
   const router = createBrowserRouter([
     {
       path: "/login",
-      element: <LoginPage/>
-    },{
+      element: <LoginPage />,
+    },
+    {
       path: "/",
-      element: <Dashboard/>
-    },{
-      path:"/add",
-      element:  <AddProduct/>
-    },{
+      element: <ProtectedRoute element={<Dashboard />} />,
+    },
+    {
+      path: "/add",
+      element: <ProtectedRoute element={<AddProduct />} />,
+    },
+    {
       path: "/track",
-      element: <Track/>
-    }
-  ])
-  return (
-    <>
-      <RouterProvider router={router} />
-    </>
-  )
+      element: <ProtectedRoute element={<Track />} />,
+    },
+  ]);
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;
-
