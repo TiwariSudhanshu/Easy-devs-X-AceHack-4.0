@@ -26,11 +26,11 @@ const Track = () => {
 
         setIsVerifying(true)
         try {
-            const responsedetails = await axios.get(`http://localhost:3000/get-product/${inputKey}`, {
+            const responsedetails = await axios.get(`https://easy-devs-x-acehack-4-0.onrender.com/get-product/${inputKey}`, {
                 params: { id: inputKey }
             })
 
-            const responseHistory = await axios.get(`http://localhost:3000/get-ownership-history/${inputKey}`, {
+            const responseHistory = await axios.get(`https://easy-devs-x-acehack-4-0.onrender.com/get-ownership-history/${inputKey}`, {
                 params: { id: inputKey }
             })
 

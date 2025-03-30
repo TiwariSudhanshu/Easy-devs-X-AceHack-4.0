@@ -55,7 +55,7 @@ const Verify = () => {
         setIsVerifying(true)
 
         try {
-            const response = await axios.get(`http://localhost:3000/get-product/${inputKey}`, {
+            const response = await axios.get(`https://easy-devs-x-acehack-4-0.onrender.com/get-product/${inputKey}`, {
                 params: { id: inputKey }
             })
 

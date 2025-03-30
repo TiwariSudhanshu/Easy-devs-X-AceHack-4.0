@@ -24,7 +24,7 @@ const OwnershipChange = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`http://localhost:3000/transfer-nft`, {
+            const response = await axios.post(`https://easy-devs-x-acehack-4-0.onrender.com/transfer-nft`, {
                 ...user
             })
             if (response.status === 200) {

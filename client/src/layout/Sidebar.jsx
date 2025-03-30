@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -10,64 +11,85 @@ const Sidebar = ({ activePage, setActivePage }) => {
     if (!address) return 'Not Connected';
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
+  const [role, setrole] = useState("")
+
+  useEffect(() => {
+    const storedRole = localStorage.getItem("role");
+    if (storedRole) {
+      setrole(storedRole);
+    }
+  }, []);
 
   return (
     <div className="w-64 bg-black/30 backdrop-blur-xl border-r border-white/10 flex flex-col bg-gradient-to-br from-indigo-900 via-purple-900 to-gray-900">
-  <div className="p-4">
-    <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text text-transparent">TrackChain</h1>
-    <div className="text-xs text-gray-400 mt-1 truncate">
-      Connected: {walletAddress ? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}` : 'Not connected'}
+      <div className="p-4">
+        <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text text-transparent">Secure Supply</h1>
+        <div className="text-xs text-gray-400 mt-1 truncate">
+          Connected: {walletAddress ? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}` : 'Not connected'}
+        </div>
+      </div>
+
+      <nav className="mt-8 flex-1">
+        <div className="px-4 space-y-1">
+          <button
+            className={`flex items-center gap-3 w-full p-3 rounded-lg transition ${pathname === '/dashboard' ? 'bg-indigo-500/20 text-indigo-400' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+            onClick={() => navigate('/')}
+          >
+            <DashboardIcon />
+            <span>Dashboard</span>
+          </button>
+
+          {
+            role === "manufacturer" &&
+            <button
+              className={`flex items-center gap-3 w-full p-3 rounded-lg transition ${pathname === '/add-product' ? 'bg-indigo-500/20 text-indigo-400' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+              onClick={() => navigate('/add')}
+            >
+              <AddIcon />
+              <span>Add Product</span>
+            </button>
+          }
+
+
+
+          <button
+            className={`flex items-center gap-3 w-full p-3 rounded-lg transition ${pathname === '/track' ? 'bg-indigo-500/20 text-indigo-400' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+            onClick={() => navigate('/track')}
+          >
+            <SearchIcon />
+            <span>Track Order</span>
+
+          </button>
+
+          {
+            role != "consumer" &&
+            <button
+              className={`flex items-center gap-3 w-full p-3 rounded-lg transition ${pathname === '/track' ? 'bg-indigo-500/20 text-indigo-400' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+              onClick={() => navigate('/ownerChange')}
+            >
+              <SearchIcon />
+              <span>OwnerChange</span>
+            </button>
+          }
+
+
+        </div>
+      </nav>
+
+      <div className="p-4 border-t border-white/10 mt-auto">
+        <button
+          className="flex items-center gap-2 p-2 w-full text-gray-400 hover:text-white rounded-lg transition"
+          onClick={() => {
+            // Clear wallet address from redux
+            // dispatch(clearWalletAddress());
+            navigate('/login');
+          }}
+        >
+          <LogoutIcon />
+          <span>Logout</span>
+        </button>
+      </div>
     </div>
-  </div>
-  
-  <nav className="mt-8 flex-1">
-    <div className="px-4 space-y-1">
-      <button 
-        className={`flex items-center gap-3 w-full p-3 rounded-lg transition ${pathname === '/dashboard' ? 'bg-indigo-500/20 text-indigo-400' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
-        onClick={() => navigate('/')}
-      >
-        <DashboardIcon />
-        <span>Dashboard</span>
-      </button>
-      <button 
-        className={`flex items-center gap-3 w-full p-3 rounded-lg transition ${pathname === '/add-product' ? 'bg-indigo-500/20 text-indigo-400' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
-        onClick={() => navigate('/add')}
-      >
-        <AddIcon />
-        <span>Add Product</span>
-      </button>
-      
-      <button 
-        className={`flex items-center gap-3 w-full p-3 rounded-lg transition ${pathname === '/track' ? 'bg-indigo-500/20 text-indigo-400' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
-        onClick={() => navigate('/track')}
-      >
-        <SearchIcon />
-        <span>Track Order</span>
-      </button>
-      <button 
-        className={`flex items-center gap-3 w-full p-3 rounded-lg transition ${pathname === '/track' ? 'bg-indigo-500/20 text-indigo-400' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
-        onClick={() => navigate('/ownerChange')}
-      >
-        <SearchIcon />
-        <span>OwnerChange</span>
-      </button>
-    </div>
-  </nav>
-  
-  <div className="p-4 border-t border-white/10 mt-auto">
-    <button 
-      className="flex items-center gap-2 p-2 w-full text-gray-400 hover:text-white rounded-lg transition"
-      onClick={() => {
-        // Clear wallet address from redux
-        // dispatch(clearWalletAddress());
-        navigate('/login');
-      }}
-    >
-      <LogoutIcon />
-      <span>Logout</span>
-    </button>
-  </div>
-</div>
   );
 };
 

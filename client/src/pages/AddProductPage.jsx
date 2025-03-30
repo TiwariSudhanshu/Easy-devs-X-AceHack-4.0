@@ -68,7 +68,7 @@ const AddProduct = () => {
                 // tags: formData.tags.split(',').map3(tag => tag.trim())
             };
             console.log('ProductData Category', productData.category);
-            const response = await axios.post("http://localhost:3000/add-product", productData);
+            const response = await axios.post("https://easy-devs-x-acehack-4-0.onrender.com/add-product", productData);
             
             if(response.status === 200) {
                 toast.success('Product added successfully!', {

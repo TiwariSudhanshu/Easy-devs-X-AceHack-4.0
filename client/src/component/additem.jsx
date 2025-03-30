@@ -47,7 +47,7 @@ const Additem = () => {
         console.log(data);
         data.recipient = walletAddress;
         try {
-            const response = await axios.post("http://localhost:3000/add-product",data)
+            const response = await axios.post("https://easy-devs-x-acehack-4-0.onrender.com/add-product",data)
             console.log(response);
             if(response.status === 200) {
                 alert("Product added successfully");

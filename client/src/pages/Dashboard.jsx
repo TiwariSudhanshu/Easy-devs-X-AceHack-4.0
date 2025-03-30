@@ -34,24 +34,6 @@ const Dashboard = () => {
       {/* Main content */}
       <div className="flex-1 overflow-auto p-6">
         <h1 className="text-2xl font-bold mb-6 text-white">Dashboard Overview</h1>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {stats.map((stat, index) => (
-            <div 
-              key={index} 
-              className={`p-6 rounded-xl ${stat.bg} ${stat.text} shadow-xl`}
-            >
-              <div className="flex justify-between items-start mb-4">
-                <h2 className="text-lg font-medium">{stat.title}</h2>
-                <div className="p-2 rounded-lg bg-white/20">
-                  {stat.icon}
-                </div>
-              </div>
-              <div className="text-3xl font-bold">{stat.value}</div>
-            </div>
-          ))}
-        </div>
-        
         <div className="rounded-xl bg-white/10 backdrop-blur-lg border border-white/10 shadow-xl p-6 overflow-hidden">
           <h2 className="text-xl font-bold mb-4 text-white">Recent Products</h2>
           <div className="overflow-x-auto">
