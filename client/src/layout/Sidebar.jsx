@@ -1,11 +1,13 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector,  } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { clearWalletAddress } from '../store/walletSlice';
+import { useEffect, useState } from 'react';
 
 const Sidebar = () => {
   const walletAddress = useSelector((state) => state.wallet.walletAddress);
   const navigate = useNavigate();
   const pathname = useLocation();
+  const [role, setrole] = useState("consumer");
 
   const formatWalletAddress = (address) => {
     if (!address) return 'Not Connected';
@@ -19,6 +21,14 @@ const Sidebar = () => {
     // Optionally, navigate to a different page after logout
     navigate('/login');
   }
+
+  useEffect(() => {
+    const storedRole = localStorage.getItem("role");
+    if (storedRole) {
+      setrole(storedRole);
+    }
+  }, []);
+
   return (
     <div className="w-64 bg-black/30 backdrop-blur-xl border-r border-white/10 flex flex-col bg-gradient-to-br from-indigo-900 via-purple-900 to-gray-900">
       <div className="p-4">

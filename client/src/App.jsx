@@ -1,11 +1,11 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ProtectedRoute from "./ProtectedRoute";
-import LoginPage from "./pages/LoginPage";
-import Dashboard from "./pages/Dashboard";
-import AddProduct from "./pages/AddProductPage";
 import Track from "./pages/TrackOrder";
+import LoginPage from "./pages/LoginPage";
 import OwnershipChange from "./pages/transferownership";
+import Dashboard from "./pages/Dashboard";
+import AddProduct from './pages/AddProductPage'
 
 function App() {
   const walletAddress = useSelector((state) => state.wallet.walletAddress); 
@@ -13,28 +13,6 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/login",
-<<<<<<< HEAD
-      element: <LoginPage />
-    }, {
-      path: "/",
-      element: <Dashboard />
-    }, {
-      path: "/add",
-      element: <AddProduct />
-    }, {
-      path: "/track",
-      element: <Track />
-    }, {
-      path: "/ownerChange",
-      element: <OwnershipChange />
-    }
-  ])
-  return (
-    <>
-      <RouterProvider router={router} />
-    </>
-  )
-=======
       element: <LoginPage />,
     },
     {
@@ -44,6 +22,9 @@ function App() {
     {
       path: "/add",
       element: <ProtectedRoute element={<AddProduct />} />,
+    }, {
+      path: "/ownerChange",
+      element: <OwnershipChange />
     },
     {
       path: "/track",
@@ -52,7 +33,6 @@ function App() {
   ]);
 
   return <RouterProvider router={router} />;
->>>>>>> c22b301e8247085ac58fbafc22c1b9b1c75bcf24
 }
 
 export default App;
