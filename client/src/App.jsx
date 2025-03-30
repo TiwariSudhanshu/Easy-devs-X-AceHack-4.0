@@ -7,6 +7,7 @@ import LoginPage from "./pages/LoginPage";
 import Dashboard from "./pages/Dashboard";
 import AddProduct from "./pages/AddProductPage";
 import Track from "./pages/TrackOrder";
+import OwnershipChange from "./pages/transferownership";
 
 function App() {
   // const router = createBrowserRouter([
@@ -33,16 +34,19 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/login",
-      element: <LoginPage/>
-    },{
+      element: <LoginPage />
+    }, {
       path: "/",
-      element: <Dashboard/>
-    },{
-      path:"/add",
-      element:  <AddProduct/>
-    },{
+      element: <Dashboard />
+    }, {
+      path: "/add",
+      element: <AddProduct />
+    }, {
       path: "/track",
-      element: <Track/>
+      element: <Track />
+    }, {
+      path: "/ownerChange",
+      element: <OwnershipChange />
     }
   ])
   return (

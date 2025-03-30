@@ -6,12 +6,6 @@ const Sidebar = ({ activePage, setActivePage }) => {
   const navigate = useNavigate();
   const pathname = useLocation();
 
-  const menuItems = [
-    { title: 'Dashboard', icon: <DashboardIcon />, page: 'dashboard' },
-    { title: 'Add Product', icon: <AddIcon />, page: 'add-product' },
-    { title: 'Track Product', icon: <SearchIcon />, page: 'track-product' },
-  ];
-
   const formatWalletAddress = (address) => {
     if (!address) return 'Not Connected';
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
@@ -50,8 +44,13 @@ const Sidebar = ({ activePage, setActivePage }) => {
         <SearchIcon />
         <span>Track Order</span>
       </button>
-      
-      
+      <button 
+        className={`flex items-center gap-3 w-full p-3 rounded-lg transition ${pathname === '/track' ? 'bg-indigo-500/20 text-indigo-400' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+        onClick={() => navigate('/ownerChange')}
+      >
+        <SearchIcon />
+        <span>OwnerChange</span>
+      </button>
     </div>
   </nav>
   
