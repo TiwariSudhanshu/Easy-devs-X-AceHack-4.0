@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import InputField from '../component/parts/inputfield';
 import Button from '../component/parts/button';
 import Sidebar from '../layout/Sidebar';
+import axios from 'axios';
 
 const OwnershipChange = () => {
     const navigate = useNavigate();
@@ -14,16 +15,32 @@ const OwnershipChange = () => {
         tokenId: ""
     });
 
+    // 0xdCbE9773B8df79F49b3EC77eD816d5E56dD341fb
+
     const handleChange = (e) => {
         setUser({ ...user, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const { from, to, tokenId } = user;
-
-        console.log("Ownership Change Details:", { from, to, tokenId });
-        toast.success("Ownership change submitted successfully!");
+        try {
+            const response = await axios.post(`http://localhost:3000/transfer-nft`, {
+                ...user
+            })
+            if (response.status === 200) {
+                toast.success("Ownership changed successfully")
+                setVerifiedData(response.data)
+                toast.success("Data found")
+            } else {
+                setVerifiedData(null)
+                toast.error("No item found with that key")
+            }
+        } catch (error) {
+            console.error("Error verifying item:", error)
+            toast.error("An error occurred while verifying the item")
+        } finally {
+            setIsVerifying(false)
+        }
 
         setUser({
             from: "",
@@ -31,6 +48,9 @@ const OwnershipChange = () => {
             tokenId: ""
         });
     };
+
+    console.log(user.from, user.to, user.tokenId);
+
 
     return (
         <div className="flex h-screen bg-gray-900 text-gray-100">
